@@ -42,3 +42,28 @@ class UpdateNoteView(APIView):
             serializer.save()
             
         return Response(serializer.data)
+
+
+class UpdateNoteView(APIView):
+    # permission_classes = (IsAuthenticated,)
+    # serializer_class = PaymentSerializerView
+
+    def put(self, request, pk):
+        data = request.data
+        note = Note.objects.get(id=pk)
+        serializer = NoteSerializer(instance=note, data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            
+        return Response(serializer.data)
+
+
+class DeleteNoteView(APIView):
+    # permission_classes = (IsAuthenticated,)
+    # serializer_class = PaymentSerializerView
+
+    def destroy(self, request, pk):
+        note = Note.objects.get(id=pk)
+        note.delete()
+        return Response('Note Was Deleted')
