@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -25,3 +26,19 @@ class GetNotes(APIView):
         notes = Note.objects.get(id=pk)
         serializer = NoteSerializer(notes, many=False)
         return Response(serializer.data)       
+
+
+
+class UpdateNoteView(APIView):
+    # permission_classes = (IsAuthenticated,)
+    # serializer_class = PaymentSerializerView
+
+    def post(self, request, pk):
+        data = request.data
+        note = Note.objects.get(id=pk)
+        serializer = NoteSerializer(instance=note, data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            
+        return Response(serializer.data)
