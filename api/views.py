@@ -19,6 +19,7 @@ class NotesList(APIView):
         serializer = NoteSerializer(notes, many=True)
         return Response(serializer.data)
 
+
 class GetNotes(APIView):
     def get(self, request, pk, format=None):
         notes = Note.objects.get(id=pk)
