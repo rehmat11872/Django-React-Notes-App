@@ -33,7 +33,7 @@ class UpdateNoteView(APIView):
     # permission_classes = (IsAuthenticated,)
     # serializer_class = PaymentSerializerView
 
-    def post(self, request, pk):
+    def put(self, request, pk):
         data = request.data
         note = Note.objects.get(id=pk)
         serializer = NoteSerializer(instance=note, data=data)
