@@ -1,4 +1,6 @@
+from cgitb import reset
 import re
+from urllib import response
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -43,27 +45,24 @@ class UpdateNoteView(APIView):
             
         return Response(serializer.data)
 
-
-class UpdateNoteView(APIView):
+class CreateNoteView(APIView):
     # permission_classes = (IsAuthenticated,)
-    # serializer_class = PaymentSerializerView
 
-    def put(self, request, pk):
+    def post(self, request):
         data = request.data
-        note = Note.objects.get(id=pk)
-        serializer = NoteSerializer(instance=note, data=data)
-
-        if serializer.is_valid():
-            serializer.save()
-            
+        note = Note.objects.create(
+            body=data['body']
+            )
+        serializer = NoteSerializer(note, many=False)
         return Response(serializer.data)
+
 
 
 class DeleteNoteView(APIView):
     # permission_classes = (IsAuthenticated,)
     # serializer_class = PaymentSerializerView
 
-    def destroy(self, request, pk):
+    def delete(self, request, pk):
         note = Note.objects.get(id=pk)
         note.delete()
         return Response('Note Was Deleted')
